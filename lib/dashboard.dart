@@ -2,160 +2,254 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:my_reports/myreport.dart';
 import 'package:my_reports/report.dart';
+import 'package:my_reports/reports.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _selectedIndex = 0;
+  final Color primaryColor = Colors.green.shade700;
+
+  void _onBottomNavTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Bar chart container at the top
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        appBar: AppBar(
+          title: Text('Dashboard'),
+          backgroundColor: Colors.green,
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
             children: [
-              // Fixed Y-axis (Years) on the left
-              Container(
-                width: 60, // Adjust width as needed for the Y-axis labels
-                padding: EdgeInsets.only(left: 16, top: 16),
-                child: Column(
-                  children: List.generate(5, (index) {
-                    int year = 2020 + index;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        year.toString(),
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    );
-                  }),
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.green,
                 ),
-              ),
-              // Scrollable Bar Chart on the right
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    height: 225, // Adjust height as needed
-                    width: 600, // Set width to fit more bars; adjust as needed
-                    padding: EdgeInsets.all(16),
-                    child: BarChart(
-                      BarChartData(
-                        alignment: BarChartAlignment.spaceEvenly,
-                        maxY: 2024, // Set max year as per your requirement
-                        minY: 2020, // Set min year as per your requirement
-                        barTouchData: BarTouchData(enabled: false),
-                        titlesData: FlTitlesData(
-                          leftTitles: const AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          bottomTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              getTitlesWidget: (value, meta) {
-                                // Display name on the X-axis
-                                final names = [
-                                  'Prasant',
-                                  'Rahul',
-                                  'Mina',
-                                  'Kanisk',
-                                  'Tom',
-                                  'Harry'
-                                ];
-                                if (value.toInt() < names.length) {
-                                  return Text(names[value.toInt()]);
-                                }
-                                return Text('');
-                              },
-                            ),
-                          ),
-                          rightTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          topTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                        ),
-                        borderData: FlBorderData(show: false),
-                        barGroups: [
-                          BarChartGroupData(x: 0, barRods: [
-                            BarChartRodData(
-                                toY: 2021,
-                                color: const Color.fromARGB(255, 51, 106, 53)),
-                          ]),
-                          BarChartGroupData(x: 1, barRods: [
-                            BarChartRodData(
-                                toY: 2022,
-                                color: const Color.fromARGB(255, 51, 106, 53)),
-                          ]),
-                          BarChartGroupData(x: 2, barRods: [
-                            BarChartRodData(
-                                toY: 2023,
-                                color: const Color.fromARGB(255, 51, 106, 53)),
-                          ]),
-                          BarChartGroupData(x: 3, barRods: [
-                            BarChartRodData(
-                                toY: 2024,
-                                color: const Color.fromARGB(255, 51, 106, 53)),
-                          ]),
-                          BarChartGroupData(x: 4, barRods: [
-                            BarChartRodData(
-                                toY: 2022,
-                                color: const Color.fromARGB(255, 51, 106, 53)),
-                          ]),
-                          BarChartGroupData(x: 5, barRods: [
-                            BarChartRodData(
-                                toY: 2021,
-                                color: const Color.fromARGB(255, 51, 106, 53)),
-                          ]),
-                        ],
-                      ),
-                    ),
+                child: Text(
+                  'Navigation',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
                   ),
                 ),
+              ),
+              ListTile(
+                leading: Icon(Icons.dashboard),
+                title: Text('Dashboard'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.report),
+                title: Text('Reports'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Reports()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings'),
+                onTap: () {
+                  // Navigate to Settings screen
+                },
               ),
             ],
           ),
-
-          // Buttons and additional information
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onBottomNavTapped,
+          selectedItemColor: Colors.green,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart),
+              label: 'Stats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Overview",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Myreport()),
-                      );
-                    },
-                    child: Text('My reports '),
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Button action
-                    },
-                    child: Text('Button 2'),
-                  ),
-                  // Additional info below buttons
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Text(
-                      'Additional information goes here.',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
+                  _buildStatCard("Vill", "30", "vill.png", primaryColor),
+                  _buildStatCard("Target", "75%", "target.png", primaryColor),
+                  _buildStatCard("Indent", "50%", "indent.png", primaryColor),
                 ],
               ),
-            ),
+              const SizedBox(height: 24),
+              const Text(
+                "Planting & Growth",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              _buildBarChart(),
+              const SizedBox(height: 24),
+              _buildPieChart(),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildAchievementCard("Total", "120 Tons", primaryColor),
+                  _buildAchievementCard("Achieved", "90 Tons", primaryColor),
+                ],
+              ),
+            ],
           ),
-        ],
+        ));
+  }
+
+  Widget _buildStatCard(
+      String title, String value, String iconPath, Color color) {
+    return Expanded(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Image.asset('assets/$iconPath', height: 40, color: color),
+              SizedBox(height: 8),
+              Text(title,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
+              Text(value,
+                  style: TextStyle(
+                      fontSize: 24, color: color, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBarChart() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Growth Progress",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 200,
+              child: BarChart(
+                BarChartData(
+                  titlesData: FlTitlesData(show: true),
+                  borderData: FlBorderData(show: false),
+                  barGroups: [
+                    BarChartGroupData(x: 0, barRods: [
+                      BarChartRodData(toY: 8, color: Colors.green)
+                    ]),
+                    BarChartGroupData(x: 1, barRods: [
+                      BarChartRodData(toY: 10, color: Colors.green)
+                    ]),
+                    BarChartGroupData(x: 2, barRods: [
+                      BarChartRodData(toY: 14, color: Colors.green)
+                    ]),
+                    BarChartGroupData(x: 3, barRods: [
+                      BarChartRodData(toY: 15, color: Colors.green)
+                    ]),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPieChart() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Planting Distribution",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(
+                height: 200,
+                child: PieChart(PieChartData(
+                  sections: [
+                    PieChartSectionData(
+                        color: Colors.green.shade300,
+                        value: 40,
+                        title: "North"),
+                    PieChartSectionData(
+                        color: Colors.green.shade500, value: 30, title: "East"),
+                    PieChartSectionData(
+                        color: Colors.green.shade700,
+                        value: 20,
+                        title: "South"),
+                    PieChartSectionData(
+                        color: Colors.green.shade900, value: 10, title: "West"),
+                  ],
+                ))),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAchievementCard(String title, String value, Color color) {
+    return Expanded(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(title,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
+              Text(value,
+                  style: TextStyle(
+                      fontSize: 24, color: color, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
       ),
     );
   }

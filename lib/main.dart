@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_reports/dashboard.dart';
 import 'package:my_reports/inputField.dart';
+import 'package:my_reports/location_screen.dart';
 import 'package:my_reports/myreport.dart';
+import 'package:my_reports/new_survey.dart';
 import 'package:my_reports/report.dart';
 import 'package:my_reports/report_detail.dart';
 import 'package:my_reports/reports.dart';
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: DashboardScreen(),
+      home: InputFormScreen(),
     );
   }
 }

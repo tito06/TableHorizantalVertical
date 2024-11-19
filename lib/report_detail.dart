@@ -359,29 +359,6 @@ class _ReportDetailsScreenState extends State<ReportDetailsScreen> {
       appBar: AppBar(
         title: Text("Report Details"),
         backgroundColor: Colors.green,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.download),
-            onPressed: () {
-              showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(1000, 80, 0, 0),
-                items: [
-                  PopupMenuItem(
-                    child: Text("Download as Excel"),
-                    onTap: () async {
-                      await saveExcelToDownloads(widget.reportData);
-                    },
-                  ),
-                  PopupMenuItem(
-                    child: Text("Download as PDF"),
-                    onTap: _requestPermission,
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
       ),
       body: widget.reportData.isEmpty
           ? Container(

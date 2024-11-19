@@ -68,6 +68,8 @@ class _ReportsState extends State<Reports> {
     selcteddate = date[0];
     selctedindentType = identType[0];
     selctedSelfType = selfType[0];
+    selectedFromVillageCode = ""; // Set initial value
+    selectedToVillageCode = "";
   }
 
   Future<void> _fetchVillageName() async {
@@ -76,10 +78,11 @@ class _ReportsState extends State<Reports> {
       final items = await _reportViewModel.fetchVillages(requestDataForVillage);
       setState(() {
         villageData = items;
-        selectedFromVillageCode =
-            villageData.isNotEmpty ? villageData[0]['V_CODE']! : "-";
-        selectedToVillageCode =
-            villageData.isNotEmpty ? villageData[0]['V_CODE']! : "-";
+        if (villageData.isNotEmpty) {
+          // Set initial selected values based on fetched data
+          selectedFromVillageCode = villageData[0]['V_CODE']!;
+          selectedToVillageCode = villageData[0]['V_CODE']!;
+        }
         isVillageLoading = false;
       });
     } catch (e) {
@@ -427,10 +430,12 @@ class _ReportsState extends State<Reports> {
 
   Widget _buildDropdownField(String label, List<String> items,
       String selectedValue, ValueChanged<String?> onChanged) {
-    if (!items.contains(selectedValue)) {
-      selectedValue =
-          items.isNotEmpty ? items[0] : ""; // Set to first item or default
-    }
+    selectedValue = items.contains(selectedValue)
+        ? selectedValue
+        : items.isNotEmpty
+            ? items[0]
+            : '';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -443,11 +448,13 @@ class _ReportsState extends State<Reports> {
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
-          value: null,
+          value: selectedValue.isEmpty
+              ? null
+              : selectedValue, // Handle the empty value case
           hint: Text("Select Option"),
           isExpanded: true,
           items: items
-              .map((item) => DropdownMenuItem(
+              .map((item) => DropdownMenuItem<String>(
                     value: item,
                     child: Text(
                       item,

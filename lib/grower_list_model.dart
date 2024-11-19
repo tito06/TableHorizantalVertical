@@ -1,14 +1,14 @@
-class VillageDataModel {
+class GrowerListModel {
   int? status;
   bool? success;
   int? code;
   String? message;
   List<Data>? data;
 
-  VillageDataModel(
+  GrowerListModel(
       {this.status, this.success, this.code, this.message, this.data});
 
-  VillageDataModel.fromJson(Map<String, dynamic> json) {
+  GrowerListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     success = json['success'];
     code = json['code'];
@@ -35,26 +35,26 @@ class VillageDataModel {
 }
 
 class Data {
-  String? vCODE;
-  String? vNAME;
-  String? vHNAME;
-  String? vYEAR;
+  int? gCODE;
+  String? gNAME;
+  String? gFATHER;
+  String? gHNAME;
 
-  Data({this.vCODE, this.vNAME, this.vHNAME, this.vYEAR});
+  Data({this.gCODE, this.gNAME, this.gFATHER, this.gHNAME});
 
   Data.fromJson(Map<String, dynamic> json) {
-    vCODE = json['V_CODE'];
-    vNAME = json['V_NAME'];
-    vHNAME = json['V_HNAME'];
-    vYEAR = json['V_YEAR'];
+    gCODE = json['G_CODE'];
+    gNAME = json['G_NAME'];
+    gFATHER = json['G_FATHER'];
+    gHNAME = json['G_HNAME'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['V_CODE'] = this.vCODE;
-    data['V_NAME'] = this.vNAME;
-    data['V_HNAME'] = this.vHNAME;
-    data['V_YEAR'] = this.vYEAR;
+    data['G_CODE'] = this.gCODE;
+    data['G_NAME'] = this.gNAME;
+    data['G_FATHER'] = this.gFATHER;
+    data['G_HNAME'] = this.gHNAME;
     return data;
   }
 }

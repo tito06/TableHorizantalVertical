@@ -13,16 +13,16 @@ class PartitionScreen extends StatefulWidget {
 }
 
 class _PartitionScreenState extends State<PartitionScreen> {
-  List<String> partion = ['No partition', '1', '2', '3'];
+  List<String> partion = ['No partition', '2', '3'];
   String? selectedPartion;
-  final TextEditingController _inputController1 = TextEditingController();
+  final TextEditingController _inputPartition = TextEditingController();
   List<Map<String, dynamic>>? areaData;
 
   @override
   void initState() {
     super.initState();
     print(widget.surveyData);
-    _inputController1.text = "Dummy Input 1";
+    _inputPartition.text = "";
 
     selectedPartion = partion[0];
   }
@@ -73,7 +73,7 @@ class _PartitionScreenState extends State<PartitionScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                              labelText: "Partion",
+                              labelText: "Numner of Partion",
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -84,9 +84,9 @@ class _PartitionScreenState extends State<PartitionScreen> {
                             Row(children: [
                               Expanded(
                                 child: TextField(
-                                  controller: _inputController1,
+                                  controller: _inputPartition,
                                   decoration: InputDecoration(
-                                    labelText: "Input 1",
+                                    labelText: "Your Share Area (%)",
                                     border: OutlineInputBorder(),
                                   ),
                                 ),
@@ -103,7 +103,9 @@ class _PartitionScreenState extends State<PartitionScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => AreaScreen(
-                                                balanceArea: 50,
+                                                balanceArea: double.parse(
+                                                    _inputPartition.value.text),
+                                                surveyData: surveyData,
                                               )));
 
                                   if (result != null) {
@@ -134,13 +136,59 @@ class _PartitionScreenState extends State<PartitionScreen> {
                               itemBuilder: (context, index) {
                                 final areadata = areaData![index];
                                 return Card(
-                                  child: ListTile(
-                                    title: Text(
-                                        "Village name: ${areadata['village']}"),
-                                    subtitle: Text(
-                                        "Grower: ${areadata['grower']}\nArea: ${areadata['area']} acres"),
-                                  ),
-                                );
+                                    elevation: 3,
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Village: ${areadata['village']}",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Village code: ${areadata['villageCode']}",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Grower: ${areadata['grower']}",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Grower code: ${areadata['growerCode']}",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Area:  ${areadata['area']} %",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Total Area:  ${areadata['totalArea']} hectre",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )));
                               },
                             ),
                           ],
